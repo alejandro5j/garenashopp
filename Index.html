@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GARENA SHOP | Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary-grad: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --accent: #00f2fe; --bg-light: #f0f2f5; --card-white: #ffffff;
+            --text-dark: #0f172a; --text-gray: #64748b; --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --success: #10b981; --error: #ef4444;
+        }
+        body { margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; align-items: center; }
+        
+        header { width: 100%; padding: 30px 0; text-align: center; background: var(--card-white); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); }
+        header h1 { font-family: 'Rajdhani', sans-serif; font-size: 1.8rem; margin: 0; letter-spacing: 2px; text-transform: uppercase; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .online-status-p { letter-spacing: 1px; font-size: 0.7rem; font-weight: 800; color: var(--text-gray); margin: 8px 0 0 0; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        .online-status { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .container { width: 92%; max-width: 440px; padding-bottom: 60px; }
+        h2 { font-size: 0.8rem; font-weight: 800; margin: 35px 0 15px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; color: #475569; }
+        h2 i { color: #a855f7; }
+        h2::after { content: ""; flex: 1; height: 2px; background: linear-gradient(to right, var(--border), transparent); }
+
+        .grid { display: grid; gap: 12px; }
+        .card { 
+            background: var(--card-white); 
+            border: 1px solid rgba(255,255,255,0.8); 
+            border-radius: 20px; 
+            padding: 18px 22px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: var(--shadow); 
+            position: relative;
+        }
+        .card:hover { transform: translateY(-3px); border-color: #a855f7; }
+
+        .cofres-container { background: var(--card-white); border-radius: 20px; padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .scroll-menu { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; -ms-overflow-style: none; }
+        .scroll-menu::-webkit-scrollbar { display: none; }
+        
+        .chip { 
+            flex: 0 0 auto; min-width: 45px; height: 45px; 
+            background: #f1f5f9; border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: 800; color: var(--text-gray); transition: 0.3s;
+        }
+        .chip.active { background: var(--primary-grad); color: white; transform: scale(1.1); box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4); }
+
+        .info .title { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-gray); margin-bottom: 4px; }
+        .info .price { display: block; font-size: 1.2rem; font-weight: 800; color: #1e293b; }
+        
+        .btn-buy { 
+            min-width: 65px; height: 45px; background: #f8fafc; border-radius: 14px; 
+            display: flex; justify-content: center; align-items: center; 
+            color: #1e293b; transition: all 0.3s; border: 1px solid var(--border); font-weight: 800; 
+        }
+        .card:hover .btn-buy { background: var(--primary-grad); color: white; border-color: transparent; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); }
+        .modal { background: white; width: 90%; max-width: 380px; border-radius: 28px; padding: 30px; box-sizing: border-box; position: relative; }
+        
+        .spei-box { background: #f8fafc; padding: 15px; border-radius: 18px; border: 2px solid #edf2f7; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
+        .input-group label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-gray); margin-bottom: 8px; text-transform: uppercase; }
+        .input-group input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; }
+
+        #fileInput { display: none; }
+        .file-upload-label { display: flex; align-items: center; justify-content: center; gap: 10px; background: #f1f5f9; border: 2px dashed #cbd5e1; padding: 15px; border-radius: 15px; cursor: pointer; color: var(--text-gray); font-weight: 600; }
+        .file-selected { border-style: solid; background: #ecfdf5; border-color: #10b981; color: #047857; }
+
+        .btn-confirm { width: 100%; background: var(--primary-grad); color: white; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
+        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; color: var(--text-gray); }
+
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 320px; pointer-events: none; }
+        .toast { padding: 14px; border-radius: 12px; background: white; margin-bottom: 8px; border-left: 5px solid var(--error); box-shadow: var(--shadow); font-weight: 700; }
+
+        .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); display: none; justify-content: center; align-items: center; z-index: 1100; backdrop-filter: blur(4px); }
+        .success-card { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 280px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+        .footer-note { margin-top: 40px; background: #1e293b; color: white; padding: 25px; text-align: center; border-radius: 24px; }
+    </style>
+</head>
+<body>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card">
+            <i class="fas fa-check-circle" style="font-size: 2.5rem; color: #10b981; margin-bottom: 12px; display: block;"></i>
+            <h3>✅ Pedido enviado</h3>
+            <p style="font-size: 0.8rem; color: var(--text-gray);">Diamantes en camino</p>
+            <button onclick="closeSuccess()" style="margin-top: 15px; width: 100%; padding: 10px; background: var(--primary-grad); border: none; border-radius: 10px; color: white; font-weight: 800;">ENTENDIDO</button>
+        </div>
+    </div>
+
+    <header>
+        <h1><i class="fas fa-bolt"></i> GARENA SHOP</h1>
+        <p class="online-status-p"><span class="online-status"></span> SISTEMA OPERATIVO</p>
+    </header>
+
+    <div class="container">
+        <h2><i class="fas fa-gem"></i> Diamantes Free Fire MÉXICO</h2>
+        <div class="grid">
+            <div class="card" onclick="openPayment('110 Diamntes', '$20')">
+                <div class="info"><span class="title">Paquete Básico</span><span class="price">110 Diamantes</span></div>
+                <div class="btn-buy">$20</div>
+            </div>
+            <div class="card" onclick="openPayment('341 Diamantes', '$58')">
+                <div class="info"><span class="title">Paquete Standar</span><span class="price">341 Diamantes</span></div>
+                <div class="btn-buy">$58</div>
+            </div>
+            <div class="card" onclick="openPayment('572 Diamantes', '$95')">
+                <div class="info"><span class="title">Paquete Plus</span><span class="price">572 Diamantes</span></div>
+                <div class="btn-buy">$95</div>
+            </div>
+            <div class="card" onclick="openPayment('1166 Diamantes', '$175')">
+                <div class="info"><span class="title">Paquete Pro</span><span class="price">1166 Diamantes</span></div>
+                <div class="btn-buy">$175</div>
+            </div>
+            <div class="card" onclick="openPayment('2398 Diamantes', '$320')">
+                <div class="info"><span class="title">Paquete Elite</span><span class="price">2398 Diamantes</span></div>
+                <div class="btn-buy">$320</div>
+            </div>
+            <div class="card" onclick="openPayment('6160 Diamantes', '$750')">
+                <div class="info"><span class="title">Paquete Maestro</span><span class="price">6160 Diamantes</span></div>
+                <div class="btn-buy">$750</div>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-box-open"></i> Cofres EVO (Desliza)</h2>
+        <div class="cofres-container">
+            <div class="scroll-menu" id="horizontalCofres">
+                </div>
+            <div class="card" style="margin-top:10px; border-color: #a855f7; background: #fafafa;" onclick="comprarCofres()">
+                <div class="info">
+                    <span class="title">Selección Actual</span>
+                    <span class="price" id="cofresDisplay">Cofres 1</span>
+                </div>
+                <div class="btn-buy" id="precioCofres">$7</div>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-star"></i> Ofertas Especiales</h2>
+        <div class="grid">
+            <div class="card" onclick="openPayment('Pase Booyah', '$27')">
+                <div class="info"><span class="title">Promoción Única</span><span class="price">Pase  Booyah</span></div>
+                <div class="btn-buy">$27</div>
+            </div>
+            <div class="card" onclick="openPayment('Skin Samurái Sakura', '$650')">
+                <div class="info"><span class="title">TIENDA PREMIUM</span><span class="price">Skin Samurái Sakura</span></div>
+                <div class="btn-buy">$650</div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <strong>COMPRA SEGURA</strong>
+            <small style="display:block; opacity:0.6; font-size:0.75rem; margin-top: 5px;">Entrega inmediata</small>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal">
+            <i class="fas fa-times close-modal" onclick="closePayment()"></i>
+            <h3 style="text-align: center; margin-top: 0; font-family: 'Rajdhani', sans-serif;">Finalizar Pedido</h3>
+            <div class="spei-box">
+                <div>CLABE: <strong>012180015437078113</strong></div>
+                <div>Monto: <strong id="modalPrice">$0</strong></div>
+            </div>
+            <div class="input-group">
+                <label>Tu ID de Jugador</label>
+                <input type="number" id="playerID" placeholder="ID de Jugador">
+                <label>Comprobante de Pago</label>
+                <label for="fileInput" class="file-upload-label" id="fileLabel">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span id="labelText">Subir Imagen del Ticket</span>
+                </label>
+                <input type="file" id="fileInput" accept="image/*" onchange="updateFileName()">
+            </div>
+            <button class="btn-confirm" id="btnSubmit" onclick="enviarPedido()">Confirmar Pedido</button>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://lbndmhhqosppsmajpbhl.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmRtaGhxb3NwcHNtYWpwYmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTM1NzcsImV4cCI6MjA5MjkyOTU3N30.kKvW48TS4gBD8bg5MAQXQDeU5eWEtSro7K_h94yv-O4";
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let curProd = "", curPrec = "";
+        let selectedCofres = 1;
+
+        const scrollMenu = document.getElementById('horizontalCofres');
+        for(let i=1; i<=150; i++) {
+            let chip = document.createElement('div');
+            chip.className = i === 1 ? 'chip active' : 'chip';
+            chip.innerText = i;
+            chip.onclick = function() {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                selectedCofres = i;
+                actualizarVisualCofres();
+            };
+            scrollMenu.appendChild(chip);
+        }
+
+        function actualizarVisualCofres() {
+            const precio = selectedCofres * 7;
+            document.getElementById('cofresDisplay').innerText = `Cofres ${selectedCofres}`;
+            document.getElementById('precioCofres').innerText = `$${precio}`;
+        }
+
+        function comprarCofres() {
+            const precio = selectedCofres * 7;
+            openPayment(`${selectedCofres} Cofres`, `$${precio}`);
+        }
+
+        function openPayment(p, pr) {
+            curProd = p; curPrec = pr;
+            document.getElementById('modalPrice').innerText = pr;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
+        function showSuccess() { document.getElementById('successOverlay').style.display = 'flex'; }
+        function closeSuccess() { document.getElementById('successOverlay').style.display = 'none'; }
+
+        function showError(msg) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function updateFileName() {
+            const input = document.getElementById('fileInput');
+            if (input.files.length > 0) {
+                document.getElementById('labelText').innerText = "Ticket Cargado";
+                document.getElementById('fileLabel').classList.add('file-selected');
+            }
+        }
+
+        async function enviarPedido() {
+            const id = document.getElementById('playerID').value;
+            const file = document.getElementById('fileInput').files[0];
+            const btn = document.getElementById('btnSubmit');
+
+            if (id.length < 5) { showError("ID NO VÁLIDO"); return; }
+            if (!file) { showError("Sube el comprobante"); return; }
+
+            btn.disabled = true; btn.innerText = "Procesando...";
+
+            try {
+                const fName = `ticket_${Date.now()}_${id}.png`;
+                await _supabase.storage.from('comprobantes').upload(fName, file);
+                const { data: urlData } = _supabase.storage.from('comprobantes').getPublicUrl(fName);
+                await _supabase.from('pedidos').insert([{ producto: curProd, precio: curPrec, player_id: id, foto_url: urlData.publicUrl }]);
+                
+                const prodLow = curProd.toLowerCase();
+                const esCofre = prodLow.includes("cofres");
+                const esPase = prodLow.includes("pase de nivel");
+                const esSakura = prodLow.includes("samurái sakura");
+
+                if (esCofre || esPase || esSakura) {
+                    let mensajeWa = "";
+                    if (esCofre) mensajeWa = `Hola, he comprado el paquete de ${curProd}`;
+                    else if (esPase) mensajeWa = "Hola, he comprado pase Booyah";
+                    else if (esSakura) mensajeWa = "Hola he comprado Skin samurái sakura";
+
+                    window.open(`https://wa.me/528333792877?text=${encodeURIComponent(mensajeWa + " Mi ID: " + id)}`, '_blank');
+                }
+
+                closePayment();
+                showSuccess();
+                document.getElementById('playerID').value = "";
+                document.getElementById('fileInput').value = "";
+                document.getElementById('labelText').innerText = "Subir Imagen del Ticket";
+                document.getElementById('fileLabel').classList.remove('file-selected');
+            } catch (e) {
+                showError("Error al enviar");
+            } finally {
+                btn.disabled = false; btn.innerText = "Confirmar Pedido";
+            }
+        }
+    </script>
+</body>
+</html>
+
