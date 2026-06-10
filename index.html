@@ -1,349 +1,1012 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARENA SHOP | Pagostore Style</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        :root {
-            --pagostore-red: #FF003B;
-            --pagostore-dark: #1a1a1a;
-            --pagostore-gray: #f4f4f4;
-            --paypal-blue: #0070ba;
-            --text-main: #333;
-            --border-color: #ddd;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body { 
-            margin: 0; padding: 0; 
-            font-family: 'Roboto', sans-serif; 
-            background-color: var(--pagostore-gray); 
-            color: var(--text-main); 
-        }
+<title>GARENA SHOP | Premium Store</title>
 
-        .top-banner { width: 100%; display: block; }
-        .top-banner img { width: 100%; height: auto; display: block; }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        header { 
-            background-color: var(--pagostore-dark); 
-            padding: 15px 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 2px solid var(--pagostore-red);
-        }
+<style>
 
-        header h1 { font-size: 1.1rem; margin: 0; text-transform: uppercase; font-weight: 900; display: flex; align-items: center; gap: 10px; }
-        header h1 i { color: var(--pagostore-red); }
+:root{
+    --primary:#ff003c;
+    --primary-dark:#c4002e;
+    --bg:#0f1115;
+    --card:#1a1d24;
+    --card2:#20242d;
+    --text:#ffffff;
+    --muted:#9ca3af;
+    --border:rgba(255,255,255,0.08);
+    --success:#00d26a;
 
-        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
+    --shadow:
+        0 10px 25px rgba(0,0,0,.35);
 
-        .section-title {
-            background: white;
-            padding: 12px 15px;
-            border-left: 5px solid var(--pagostore-red);
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin: 20px 0 10px 0;
-            text-transform: uppercase;
-            box-shadow: var(--shadow);
-        }
+    --radius:18px;
+}
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .card { 
-            background: white; 
-            border-radius: 8px; 
-            padding: 15px 10px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer; 
-            transition: 0.2s; 
-            border: 1px solid transparent;
-            box-shadow: var(--shadow);
-        }
+body{
+    font-family:'Roboto',sans-serif;
+    background:
+        radial-gradient(circle at top,#1d2330 0%,#0f1115 45%);
+    color:var(--text);
+    min-height:100vh;
+}
 
-        .card:hover { border-color: var(--pagostore-red); transform: translateY(-2px); }
+/* HEADER */
 
-        .gem-img { width: 50px; height: auto; margin-bottom: 8px; }
-        .evo-img { width: 45px; height: auto; }
-        .booyah-img { width: 55px; height: auto; }
-        .skin-img { width: 65px; height: auto; margin-bottom: 5px; border-radius: 4px; object-fit: contain; }
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(10px);
+    background:rgba(15,17,21,.75);
+    border-bottom:1px solid var(--border);
 
-        .premium-glow {
-            filter: drop-shadow(0 0 8px rgba(255, 0, 59, 0.4));
-            transform: scale(1.1);
-        }
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-        .info .price { 
-            display: block; 
-            font-size: 0.95rem; 
-            font-weight: 700; 
-            color: var(--pagostore-dark); 
-            margin-bottom: 10px;
-        }
+    padding:16px 22px;
+}
 
-        .btn-buy { 
-            width: 100%;
-            background: var(--pagostore-red); 
-            color: white; 
-            border-radius: 4px; 
-            padding: 8px 0;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
+header h1{
+    font-size:1.1rem;
+    font-weight:900;
+    letter-spacing:1px;
 
-        .cofres-section { background: white; padding: 15px; border-radius: 8px; box-shadow: var(--shadow); }
-        .scroll-menu { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; scrollbar-width: none; }
-        .scroll-menu::-webkit-scrollbar { display: none; }
-        .chip { 
-            flex: 0 0 auto; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            background: #eee; border-radius: 5px; font-weight: bold; cursor: pointer;
-        }
-        .chip.active { background: var(--pagostore-red); color: white; }
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 10px; box-sizing: border-box; }
-        .modal { background: white; width: 100%; max-width: 400px; border-radius: 12px; overflow-y: auto; max-height: 90vh; }
-        .modal-header { background: var(--pagostore-dark); color: white; padding: 15px; text-align: center; font-weight: bold; border-bottom: 3px solid var(--pagostore-red); }
-        .modal-body { padding: 20px; }
-        
-        .method-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .payment-box { background: #fff9f9; border: 1px dashed var(--pagostore-red); padding: 12px; border-radius: 8px; font-size: 0.85rem; text-align: center;}
-        
-        .btn-paypal { background: var(--paypal-blue); color: white; padding: 10px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
+header h1 i{
+    color:var(--primary);
+}
 
-        input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 5px; margin-bottom: 15px; box-sizing: border-box; }
-        .file-upload-label { display: block; text-align: center; padding: 12px; background: #f8f8f8; border: 2px dashed #ccc; border-radius: 8px; cursor: pointer; font-size: 0.8rem; margin-bottom: 15px; }
+.status{
+    color:var(--success);
+    font-size:.75rem;
+    font-weight:700;
+}
 
-        .btn-confirm { width: 100%; background: var(--pagostore-red); color: white; padding: 15px; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; text-transform: uppercase; }
+/* BANNER */
 
-        .footer-note { text-align: center; padding: 40px 20px; font-size: 0.75rem; color: #888; line-height: 1.6; }
-    </style>
+.top-banner{
+    width:100%;
+    overflow:hidden;
+}
+
+.top-banner img{
+    width:100%;
+    display:block;
+    object-fit:cover;
+    max-height:260px;
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:25px 18px 80px;
+}
+
+/* TITLES */
+
+.section-title{
+    margin:30px 0 18px;
+
+    font-size:.85rem;
+    font-weight:900;
+    letter-spacing:1px;
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.section-title::before{
+    content:"";
+    width:5px;
+    height:18px;
+    border-radius:10px;
+    background:var(--primary);
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+}
+
+/* CARD */
+
+.card{
+    position:relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--card2),
+            var(--card)
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:22px 18px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    transition:.25s ease;
+    cursor:pointer;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.05),
+            transparent
+        );
+
+    transform:translateX(-100%);
+    transition:.6s;
+}
+
+.card:hover::before{
+    transform:translateX(100%);
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,0,60,.45);
+    box-shadow:
+        0 15px 40px rgba(255,0,60,.18);
+}
+
+/* IMAGES */
+
+.gem-img,
+.evo-img,
+.booyah-img,
+.skin-img{
+    object-fit:contain;
+    transition:.25s;
+}
+
+.gem-img{
+    width:72px;
+    margin-bottom:14px;
+}
+
+.evo-img{
+    width:60px;
+}
+
+.booyah-img{
+    width:75px;
+}
+
+.skin-img{
+    width:90px;
+    height:90px;
+    margin-bottom:12px;
+    border-radius:14px;
+    background:#111;
+    padding:8px;
+}
+
+.card:hover img{
+    transform:scale(1.06);
+}
+
+/* INFO */
+
+.info{
+    text-align:center;
+}
+
+.price{
+    display:block;
+    font-size:1rem;
+    font-weight:800;
+    margin-bottom:14px;
+}
+
+/* BUTTON */
+
+.btn-buy{
+    width:100%;
+    padding:11px;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    text-align:center;
+
+    font-size:.88rem;
+    font-weight:800;
+
+    transition:.2s;
+}
+
+.card:hover .btn-buy{
+    transform:scale(1.03);
+}
+
+/* EVO SECTION */
+
+.cofres-section{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px;
+}
+
+.scroll-menu{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:10px;
+}
+
+.scroll-menu::-webkit-scrollbar{
+    display:none;
+}
+
+.chip{
+    min-width:44px;
+    height:44px;
+
+    border-radius:12px;
+
+    background:#252a33;
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:.2s;
+    font-weight:700;
+}
+
+.chip:hover{
+    background:#323844;
+}
+
+.chip.active{
+    background:var(--primary);
+}
+
+/* MODAL */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(8px);
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:1000;
+}
+
+.modal{
+    width:100%;
+    max-width:430px;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    background:#181b22;
+
+    border:1px solid var(--border);
+
+    animation:modal .25s ease;
+}
+
+@keyframes modal{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.modal-header{
+    padding:20px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            #8f001f
+        );
+
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.modal-body{
+    padding:24px;
+}
+
+.payment-box{
+    background:#11151c;
+    border:1px solid rgba(255,0,60,.25);
+
+    padding:15px;
+    border-radius:16px;
+
+    text-align:center;
+
+    margin-bottom:15px;
+}
+
+.btn-paypal{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    background:#0070ba;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+    color:#fff;
+
+    font-weight:700;
+
+    transition:.2s;
+}
+
+.btn-paypal:hover{
+    transform:translateY(-2px);
+}
+
+/* INPUTS */
+
+input{
+    width:100%;
+
+    background:#11151c;
+    color:#fff;
+
+    border:1px solid var(--border);
+
+    padding:14px;
+
+    border-radius:14px;
+
+    margin-bottom:14px;
+
+    outline:none;
+}
+
+input:focus{
+    border-color:var(--primary);
+}
+
+.file-upload-label{
+    display:block;
+
+    border:2px dashed rgba(255,255,255,.15);
+
+    padding:18px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    margin-bottom:18px;
+
+    transition:.2s;
+}
+
+.file-upload-label:hover{
+    border-color:var(--primary);
+}
+
+/* CONFIRM BUTTON */
+
+.btn-confirm{
+    width:100%;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color:#fff;
+
+    font-weight:900;
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.btn-confirm:hover{
+    transform:translateY(-2px);
+}
+
+/* FOOTER */
+
+.footer-note{
+    text-align:center;
+    margin-top:50px;
+
+    color:var(--muted);
+
+    font-size:.85rem;
+    line-height:1.7;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .card{
+        padding:18px 12px;
+    }
+
+    .skin-img{
+        width:75px;
+        height:75px;
+    }
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="top-banner">
-        <img src="https://iili.io/Bm5UuHJ.png" alt="Banner Garena">
+<div class="top-banner">
+    <img src="https://iili.io/CBvYfEP.png" alt="Banner">
+</div>
+
+<header>
+    <h1>
+        <i class="fas fa-bolt"></i>
+        PAGOS SHOP
+    </h1>
+
+    <div class="status">
+        ● SERVIDOR ACTIVO
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- DIAMANTES -->
+
+    <div class="section-title">
+        PAQUETES DE DIAMANTES
     </div>
 
-    <header>
-        <h1><i class="fas fa-bolt"></i> PAGOS SHOP</h1>
-        <div style="font-size: 0.7rem; color: #00ff00;">● SERVIDOR ACTIVO</div>
-    </header>
+    <div class="grid">
 
-    <div class="container">
-        <!-- DIAMANTES -->
-        <div class="section-title">PAQUETES DE DIAMANTES</div>
-        <div class="grid">
-            <div class="card" onclick="openPayment('110 Diamantes', '$20')">
-                <img src="https://iili.io/BmAodGV.png" class="gem-img">
-                <div class="info"><span class="price">110 Diamantes</span></div>
-                <div class="btn-buy">$20 MXN</div>
+        <div class="card" onclick="openPayment('110 Diamantes', '$20')">
+            <img src="https://iili.io/BmAodGV.png" class="gem-img">
+
+            <div class="info">
+                <span class="price">110 Diamantes</span>
             </div>
-            <div class="card" onclick="openPayment('341 Diamantes', '$58')">
-                <img src="https://iili.io/BmAodGV.png" class="gem-img">
-                <div class="info"><span class="price">341 Diamantes</span></div>
-                <div class="btn-buy">$58 MXN</div>
-            </div>
-            <div class="card" onclick="openPayment('572 Diamantes', '$95')">
-                <img src="https://iili.io/BmAodGV.png" class="gem-img">
-                <div class="info"><span class="price">572 Diamantes</span></div>
-                <div class="btn-buy">$95 MXN</div>
-            </div>
-            <div class="card" onclick="openPayment('1166 Diamantes', '$175')">
-                <img src="https://iili.io/BmAodGV.png" class="gem-img">
-                <div class="info"><span class="price">1166 Diamantes</span></div>
-                <div class="btn-buy">$175 MXN</div>
-            </div>
-            <div class="card" onclick="openPayment('2398 Diamantes', '$320')">
-                <img src="https://iili.io/BmAodGV.png" class="gem-img premium-glow">
-                <div class="info"><span class="price">2398 Diamantes</span></div>
-                <div class="btn-buy">$320 MXN</div>
-            </div>
-            <div class="card" onclick="openPayment('6160 Diamantes', '$750')">
-                <img src="https://iili.io/BmAodGV.png" class="gem-img premium-glow">
-                <div class="info"><span class="price">6160 Diamantes</span></div>
-                <div class="btn-buy">$750 MXN</div>
-            </div>
+
+            <div class="btn-buy">$20 MXN</div>
         </div>
 
-        <!-- COFRES EVO -->
-        <div class="section-title">SELECCIÓN DE COFRES EVO</div>
-        <div class="cofres-section">
-            <div class="scroll-menu" id="horizontalCofres"></div>
-            <div class="card" style="width: 100%; flex-direction: row; justify-content: space-between; margin-top: 10px;" onclick="comprarCofres()">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <img src="https://iili.io/BmAujQs.png" class="evo-img">
-                    <div style="text-align: left;">
-                        <b id="cofresDisplay">1 Cofre Evo</b><br>
-                        <small style="color: #666;">Selecciona la cantidad arriba</small>
-                    </div>
-                </div>
-                <div class="btn-buy" id="precioCofres" style="width: 80px;">$7</div>
+        <div class="card" onclick="openPayment('341 Diamantes', '$58')">
+            <img src="https://iili.io/BmAodGV.png" class="gem-img">
+
+            <div class="info">
+                <span class="price">341 Diamantes</span>
             </div>
+
+            <div class="btn-buy">$58 MXN</div>
         </div>
 
-        <!-- PASES Y OFERTAS -->
-        <div class="section-title">OFERTAS Y PASES</div>
-        <div class="grid">
-            <div class="card" onclick="openPayment('Pase Booyah', '$27')" style="grid-column: span 2; flex-direction: row; justify-content: space-around; padding: 20px;">
-                <img src="https://iili.io/BmAY9JR.png" class="booyah-img">
-                <div class="info" style="text-align: left;">
-                    <span class="price" style="margin:0;">Pase Booyah</span>
-                    <small>Premium Unlock</small>
-                </div>
-                <div class="btn-buy" style="width: 90px;">$27 MXN</div>
+        <div class="card" onclick="openPayment('572 Diamantes', '$95')">
+            <img src="https://iili.io/BmAodGV.png" class="gem-img">
+
+            <div class="info">
+                <span class="price">572 Diamantes</span>
             </div>
-            <!-- Samurái Sakura con precio actualizado a $600 -->
-            <div class="card" onclick="openPayment('Skin Samurái Sakura', '$600')">
-                <img src="https://iili.io/Bm5mZR2.png" class="skin-img">
-                <div class="info"><span class="price">Samurái Sakura</span></div>
-                <div class="btn-buy">$600 MXN</div>
-            </div>
-            <!-- Emote Premium con precio actualizado a $180 -->
-            <div class="card" onclick="openPayment('Emote Premium', '$180')">
-                <img src="https://iili.io/Bm7KnsV.png" class="skin-img">
-                <div class="info"><span class="price">Emote Premium</span></div>
-                <div class="btn-buy">$180 MXN</div>
-            </div>
+
+            <div class="btn-buy">$95 MXN</div>
         </div>
 
-        <div class="footer-note">
-            <b>streming Activacion por codigo
+        <div class="card" onclick="openPayment('1166 Diamantes', '$175')">
+            <img src="https://iili.io/BmAodGV.png" class="gem-img">
+
+            <div class="info">
+                <span class="price">1166 Diamantes</span>
+            </div>
+
+            <div class="btn-buy">$175 MXN</div>
         </div>
 
-    <!-- Modal Pago -->
-    <div id="paymentModal" class="modal-overlay">
-        <div class="modal">
-            <div class="modal-header">REALIZAR PAGO</div>
-            <div class="modal-body">
-                <p style="text-align: center; font-weight: bold; margin-top: 0;">Total: <span id="modalPrice" style="color: var(--pagostore-red);">$0</span></p>
-                <div class="method-container">
-                    <div class="payment-box">
-                        <small>TRANSFERENCIA BBVA (CLABE):</small><br>
-                        <b style="color: var(--pagostore-red);">012180015437078113</b>
-                    </div>
-                    <a href="https://www.paypal.me/virusTFF" target="_blank" class="btn-paypal">
-                        <i class="fab fa-paypal"></i> Pagar con PayPal
-                    </a>
-                </div>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-                <input type="number" id="playerID" placeholder="ID de Jugador (9-10 dígitos)">
-                <label for="fileInput" class="file-upload-label" id="fileLabel">
-                    <i class="fas fa-camera"></i> <span id="labelText">Subir Foto de Comprobante</span>
-                </label>
-                <input type="file" id="fileInput" style="display:none" accept="image/*" onchange="updateFileName()">
-                <button class="btn-confirm" id="btnSubmit" onclick="enviarPedido()">ENVIAR COMPROBANTE</button>
-                <button onclick="closePayment()" style="width:100%; background:none; border:none; margin-top:15px; color:#999; cursor:pointer;">Cancelar</button>
-            </div>
-        </div>
     </div>
 
-    <script>
-        const SUPABASE_URL = "https://lbndmhhqosppsmajpbhl.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmRtaGhxb3NwcHNtYWpwYmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTM1NzcsImV4cCI6MjA5MjkyOTU3N30.kKvW48TS4gBD8bg5MAQXQDeU5eWEtSro7K_h94yv-O4";
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        
-        let curProd = "", curPrec = "";
-        let selectedCofres = 1;
+    <!-- COFRES -->
 
-        const scrollMenu = document.getElementById('horizontalCofres');
-        for(let i=1; i<=150; i++) {
-            let chip = document.createElement('div');
-            chip.className = i === 1 ? 'chip active' : 'chip';
-            chip.innerText = i;
-            chip.onclick = function() {
-                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                selectedCofres = i;
-                actualizarVisualCofres();
-            };
-            scrollMenu.appendChild(chip);
-        }
+    <div class="section-title">
+        SELECCIÓN DE COFRES EVO
+    </div>
 
-        function actualizarVisualCofres() {
-            document.getElementById('cofresDisplay').innerText = `${selectedCofres} Cofres Evo`;
-            document.getElementById('precioCofres').innerText = `$${selectedCofres * 7}`;
-        }
+    <div class="cofres-section">
 
-        function comprarCofres() { openPayment(`${selectedCofres} Cofres Evo`, `$${selectedCofres * 7}`); }
+        <div class="scroll-menu" id="horizontalCofres"></div>
 
-        function openPayment(p, pr) {
-            curProd = p; curPrec = pr;
-            document.getElementById('modalPrice').innerText = pr;
-            document.getElementById('paymentModal').style.display = 'flex';
-        }
+        <div class="card"
+             style="width:100%; flex-direction:row; justify-content:space-between; margin-top:10px;"
+             onclick="comprarCofres()">
 
-        function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
+            <div style="display:flex; align-items:center; gap:15px;">
 
-        function updateFileName() {
-            const input = document.getElementById('fileInput');
-            if (input.files.length > 0) {
-                document.getElementById('labelText').innerText = "✓ Ticket Cargado";
-                document.getElementById('fileLabel').style.borderColor = "#2ecc71";
-                document.getElementById('fileLabel').style.color = "#2ecc71";
-            }
-        }
+                <img src="https://iili.io/BmAujQs.png" class="evo-img">
 
-        async function enviarPedido() {
-            const id = document.getElementById('playerID').value;
-            const file = document.getElementById('fileInput').files[0];
-            const btn = document.getElementById('btnSubmit');
+                <div style="text-align:left;">
+                    <b id="cofresDisplay">1 Cofre Evo</b><br>
+                    <small style="color:#9ca3af;">
+                        Selecciona la cantidad
+                    </small>
+                </div>
 
-            if (id.length < 5) { alert("ID inválido"); return; }
-            if (!file) { alert("Sube el comprobante"); return; }
+            </div>
 
-            btn.disabled = true; btn.innerText = "PROCESANDO...";
+            <div class="btn-buy" id="precioCofres" style="width:90px;">
+                $7
+            </div>
 
-            try {
-                const fName = `ticket_${Date.now()}_${id}.png`;
-                await _supabase.storage.from('comprobantes').upload(fName, file);
-                const { data: urlData } = _supabase.storage.from('comprobantes').getPublicUrl(fName);
-                
-                await _supabase.from('pedidos').insert([{ 
-                    producto: curProd, precio: curPrec, player_id: id, foto_url: urlData.publicUrl 
-                }]);
+        </div>
 
-                if (!curProd.includes("Diamantes")) {
-                    const msg = `PAGO REALIZADO ✅\nProducto: ${curProd}\nPrecio: ${curPrec}\nID: ${id}`;
-                    window.open(`https://wa.me/528333792877?text=${encodeURIComponent(msg)}`, '_blank');
-                }
+    </div>
 
-                alert("¡PAGO RECIBIDO!\nSe procesará pronto.");
-                location.reload();
-            } catch (e) {
-                alert("Error al enviar.");
-                btn.disabled = false; btn.innerText = "ENVIAR COMPROBANTE";
-            }
-        }
-    </script>
+    <!-- OFERTAS -->
+
+    <div class="section-title">
+        OFERTAS Y PASES
+    </div>
+
+    <div class="grid">
+
+        <div class="card" onclick="openPayment('Pase Booyah', '$27')">
+
+            <img src="https://iili.io/BmAY9JR.png" class="booyah-img">
+
+            <div class="info">
+                <span class="price">Pase Booyah</span>
+            </div>
+
+            <div class="btn-buy">$27 MXN</div>
+
+        </div>
+
+        <div class="card" onclick="openPayment('Skin Samurái Sakura', '$600')">
+
+            <img src="https://iili.io/Bm5mZR2.png" class="skin-img">
+
+            <div class="info">
+                <span class="price">Samurái Sakura</span>
+            </div>
+
+            <div class="btn-buy">$600 MXN</div>
+
+        </div>
+
+        <div class="card" onclick="openPayment('Emote Premium', '$180')">
+
+            <img src="https://iili.io/Bm7KnsV.png" class="skin-img">
+
+            <div class="info">
+                <span class="price">Emote Premium</span>
+            </div>
+
+            <div class="btn-buy">$180 MXN</div>
+
+        </div>
+
+        <div class="card" onclick="openPayment('Cuenta Netflix', '$70')">
+
+            <img
+                src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+                class="skin-img"
+            >
+
+            <div class="info">
+                <span class="price">Netflix</span>
+            </div>
+
+            <div class="btn-buy">$70 MXN</div>
+
+        </div>
+
+        <div class="card" onclick="openPayment('Cuenta Prime Video', '$40')">
+
+            <img
+                src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"
+                class="skin-img"
+            >
+
+            <div class="info">
+                <span class="price">Prime Video</span>
+            </div>
+
+            <div class="btn-buy">$40 MXN</div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-note">
+        Streaming y activación por código
+    </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div id="paymentModal" class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            REALIZAR PAGO
+        </div>
+
+        <div class="modal-body">
+
+            <p style="text-align:center; font-weight:bold; margin-bottom:20px;">
+                Total:
+                <span id="modalPrice" style="color:var(--primary);">
+                    $0
+                </span>
+            </p>
+
+            <div class="payment-box">
+
+                <small>TRANSFERENCIA BBVA:</small><br><br>
+
+                <b style="color:var(--primary);">
+                    012180015437078113
+                </b>
+
+            </div>
+
+            <a href="https://www.paypal.me/virusTFF"
+               target="_blank"
+               class="btn-paypal">
+
+                <i class="fab fa-paypal"></i>
+                Pagar con PayPal
+
+            </a>
+
+            <hr style="margin:25px 0; border:0; border-top:1px solid rgba(255,255,255,.1);">
+
+            <input
+                type="number"
+                id="playerID"
+                placeholder="ID de Jugador"
+            >
+
+            <label for="fileInput"
+                   class="file-upload-label"
+                   id="fileLabel">
+
+                <i class="fas fa-camera"></i>
+                <span id="labelText">
+                    Subir comprobante
+                </span>
+
+            </label>
+
+            <input
+                type="file"
+                id="fileInput"
+                style="display:none"
+                accept="image/*"
+                onchange="updateFileName()"
+            >
+
+            <button
+                class="btn-confirm"
+                id="btnSubmit"
+                onclick="enviarPedido()">
+
+                ENVIAR COMPROBANTE
+
+            </button>
+
+            <button
+                onclick="closePayment()"
+                style="
+                    width:100%;
+                    background:none;
+                    border:none;
+                    margin-top:15px;
+                    color:#9ca3af;
+                    cursor:pointer;
+                ">
+
+                Cancelar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL = "https://lbndmhhqosppsmajpbhl.supabase.co";
+
+const SUPABASE_KEY =
+"TU_SUPABASE_KEY";
+
+const _supabase =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+let curProd = "";
+let curPrec = "";
+
+let selectedCofres = 1;
+
+const scrollMenu =
+document.getElementById('horizontalCofres');
+
+for(let i=1; i<=150; i++){
+
+    let chip = document.createElement('div');
+
+    chip.className =
+        i === 1
+        ? 'chip active'
+        : 'chip';
+
+    chip.innerText = i;
+
+    chip.onclick = function(){
+
+        document
+        .querySelectorAll('.chip')
+        .forEach(c =>
+            c.classList.remove('active')
+        );
+
+        this.classList.add('active');
+
+        selectedCofres = i;
+
+        actualizarVisualCofres();
+
+    };
+
+    scrollMenu.appendChild(chip);
+
+}
+
+function actualizarVisualCofres(){
+
+    document
+    .getElementById('cofresDisplay')
+    .innerText =
+    `${selectedCofres} Cofres Evo`;
+
+    document
+    .getElementById('precioCofres')
+    .innerText =
+    `$${selectedCofres * 7}`;
+
+}
+
+function comprarCofres(){
+
+    openPayment(
+        `${selectedCofres} Cofres Evo`,
+        `$${selectedCofres * 7}`
+    );
+
+}
+
+function openPayment(p, pr){
+
+    curProd = p;
+    curPrec = pr;
+
+    document
+    .getElementById('modalPrice')
+    .innerText = pr;
+
+    document
+    .getElementById('paymentModal')
+    .style.display = 'flex';
+
+}
+
+function closePayment(){
+
+    document
+    .getElementById('paymentModal')
+    .style.display = 'none';
+
+}
+
+function updateFileName(){
+
+    const input =
+    document.getElementById('fileInput');
+
+    if(input.files.length > 0){
+
+        document
+        .getElementById('labelText')
+        .innerText =
+        "✓ Ticket cargado";
+
+        document
+        .getElementById('fileLabel')
+        .style.borderColor =
+        "#00d26a";
+
+    }
+
+}
+
+async function enviarPedido(){
+
+    const id =
+    document.getElementById('playerID').value;
+
+    const file =
+    document.getElementById('fileInput').files[0];
+
+    const btn =
+    document.getElementById('btnSubmit');
+
+    if(id.length < 5){
+
+        alert("ID inválido");
+        return;
+
+    }
+
+    if(!file){
+
+        alert("Sube el comprobante");
+        return;
+
+    }
+
+    btn.disabled = true;
+    btn.innerText = "PROCESANDO...";
+
+    try{
+
+        const fName =
+        `ticket_${Date.now()}_${id}.png`;
+
+        await _supabase
+        .storage
+        .from('comprobantes')
+        .upload(fName, file);
+
+        const { data:urlData } =
+        _supabase
+        .storage
+        .from('comprobantes')
+        .getPublicUrl(fName);
+
+        await _supabase
+        .from('pedidos')
+        .insert([{
+            producto:curProd,
+            precio:curPrec,
+            player_id:id,
+            foto_url:urlData.publicUrl
+        }]);
+
+        alert("¡Pago recibido!");
+
+        location.reload();
+
+    }catch(e){
+
+        alert("Error al enviar.");
+
+        btn.disabled = false;
+        btn.innerText =
+        "ENVIAR COMPROBANTE";
+
+    }
+
+}
+
+window.onclick = function(e){
+
+    const modal =
+    document.getElementById('paymentModal');
+
+    if(e.target === modal){
+
+        closePayment();
+
+    }
+
+}
+
+</script>
+
 </body>
-</html
-          
-<!-- Netflix -->
-<div class="card" onclick="openPayment('Cuenta Netflix', '$70')">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="skin-img" style="background:#000; padding:8px;">
-    <div class="info">
-        <span class="price">Netflix</span>
-    </div>
-    <div class="btn-buy">$70 MXN</div>
-</div>
-
-<!-- Prime Video -->
-<div class="card" onclick="openPayment('Cuenta Prime Video', '$40')">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png" class="skin-img" style="background:#fff; padding:8px;">
-    <div class="info">
-        <span class="price">Prime Video</span>
-    </div>
-    <div class="btn-buy">$40 MXN</div>
-</div>
+</html>
