@@ -543,15 +543,13 @@ input:focus{
 
 <div class="container">
 
-    <!-- DIAMANTES -->
-
     <div class="section-title">
         PAQUETES DE DIAMANTES
     </div>
 
     <div class="grid">
 
-        <div class="card" onclick="openPayment('110 Diamantes', '$20')">
+        <div class="card" onclick="openPayment('110 Diamantes', '$20 MXN')">
             <img src="https://iili.io/BmAodGV.png" class="gem-img">
 
             <div class="info">
@@ -561,7 +559,7 @@ input:focus{
             <div class="btn-buy">$20 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('341 Diamantes', '$58')">
+        <div class="card" onclick="openPayment('341 Diamantes', '$58 MXN')">
             <img src="https://iili.io/BmAodGV.png" class="gem-img">
 
             <div class="info">
@@ -571,7 +569,7 @@ input:focus{
             <div class="btn-buy">$58 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('572 Diamantes', '$95')">
+        <div class="card" onclick="openPayment('572 Diamantes', '$95 MXN')">
             <img src="https://iili.io/BmAodGV.png" class="gem-img">
 
             <div class="info">
@@ -581,7 +579,7 @@ input:focus{
             <div class="btn-buy">$95 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('  Diamantes', '$175')">
+        <div class="card" onclick="openPayment('1166 Diamantes', '$175 MXN')">
             <img src="https://iili.io/BmAodGV.png" class="gem-img">
 
             <div class="info">
@@ -592,28 +590,15 @@ input:focus{
         </div>
 
       
-      <div class="card" onclick="openPayment('6160 Diamantes', '$750')">
-
-    <img
-        src="https://iili.io/BmAodGV.png"
-        class="gem-img"
-    >
-
-    <div class="info">
-        <span class="price">
-            6160 Diamantes
-        </span>
-    </div>
-
-    <div class="btn-buy">
-        $750 MXN
-    </div>
-
-</div>
+        <div class="card" onclick="openPayment('6160 Diamantes', '$750 MXN')">
+            <img src="https://iili.io/BmAodGV.png" class="gem-img">
+            <div class="info">
+                <span class="price">6160 Diamantes</span>
+            </div>
+            <div class="btn-buy">$750 MXN</div>
+        </div>
       
     </div>
-
-    <!-- COFRES -->
 
     <div class="section-title">
         SELECCIÓN DE COFRES EVO
@@ -648,54 +633,71 @@ input:focus{
 
     </div>
 
-    <!-- OFERTAS -->
-
     <div class="section-title">
         OFERTAS Y PASES
     </div>
 
     <div class="grid">
 
-        <div class="card" onclick="openPayment('Pase Booyah', '$27')">
-
+        <div class="card" onclick="openPayment('Pase Booyah', '$27 MXN')">
             <img src="https://iili.io/BmAY9JR.png" class="booyah-img">
-
             <div class="info">
                 <span class="price">Pase Booyah</span>
             </div>
-
             <div class="btn-buy">$27 MXN</div>
-
         </div>
 
-        <div class="card" onclick="openPayment('Skin Samurái Sakura', '$600')">
-
+        <div class="card" onclick="openPayment('Skin Samurái Sakura', '$600 MXN')">
             <img src="https://iili.io/Bm5mZR2.png" class="skin-img">
-
             <div class="info">
                 <span class="price">Samurái Sakura</span>
             </div>
-
             <div class="btn-buy">$600 MXN</div>
-
         </div>
 
-        <div class="card" onclick="openPayment('Emote Premium', '$180')">
-
+        <div class="card" onclick="openPayment('Emote Premium', '$180 MXN')">
             <img src="https://iili.io/Bm7KnsV.png" class="skin-img">
-
             <div class="info">
                 <span class="price">Emote Premium</span>
             </div>
-
-            <div class="btn-buy">$180            
-
+            <div class="btn-buy">$180 MXN</div>       
         </div>
+
+    </div>
+
+    <div class="section-title">
+        ACTIVACIÓN TV Y STREAMING
+    </div>
+
+    <div class="grid">
+
+        <div class="card" onclick="openPayment('Netflix Premium', '$70 MXN')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="skin-img" style="background:#000;">
+            <div class="info">
+                <span class="price">Netflix Premium</span>
+            </div>
+            <div class="btn-buy">$70 MXN</div>
+        </div>
+
+        <div class="card" onclick="openPayment('Prime Video', '$40 MXN')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png" class="skin-img" style="background:#fff;">
+            <div class="info">
+                <span class="price">Prime Video</span>
+            </div>
+            <div class="btn-buy">$40 MXN</div>
+        </div>
+
+        <div class="card" onclick="openPayment('YouTube Premium', '$50 MXN')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" class="skin-img" style="background:#fff;">
+            <div class="info">
+                <span class="price">YouTube Premium</span>
+            </div>
+            <div class="btn-buy">$50 MXN</div>
+        </div>
+
     </div>
 
 </div>
-
-<!-- MODAL -->
 
 <div id="paymentModal" class="modal-overlay">
 
@@ -792,282 +794,146 @@ input:focus{
 
 <script>
 
-const SUPABASE_URL = "https://lbndmhhqosppsmajpbhl.supabase.co";
+// TUS CREDENCIALES REALES DE SUPABASE
+const SUPABASE_URL = "https://kjlfiihkavzrkgbqwczk.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqbGZpaWhrYXZ6cmtnYnF3Y3prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5Njc0MzUsImV4cCI6MjA5NzU0MzQzNX0.t70cHZ5AZM0FY19tOSl5NdzKAYQvbZRdzynVo6ellvk";
 
-const SUPABASE_KEY =
-"TU_SUPABASE_KEY";
+// URL DIRECTA A TU EDGE FUNCTION LLAMADA "enviar-telegram"
+const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/enviar-telegram`;
 
-const _supabase =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let curProd = "";
 let curPrec = "";
-
 let selectedCofres = 1;
 
-const scrollMenu =
-document.getElementById('horizontalCofres');
+const scrollMenu = document.getElementById('horizontalCofres');
 
 for(let i=1; i<=150; i++){
-
     let chip = document.createElement('div');
-
-    chip.className =
-        i === 1
-        ? 'chip active'
-        : 'chip';
-
+    chip.className = i === 1 ? 'chip active' : 'chip';
     chip.innerText = i;
-
     chip.onclick = function(){
-
-        document
-        .querySelectorAll('.chip')
-        .forEach(c =>
-            c.classList.remove('active')
-        );
-
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
-
         selectedCofres = i;
-
         actualizarVisualCofres();
-
     };
-
     scrollMenu.appendChild(chip);
-
 }
 
 function actualizarVisualCofres(){
-
-    document
-    .getElementById('cofresDisplay')
-    .innerText =
-    `${selectedCofres} Cofres Evo`;
-
-    document
-    .getElementById('precioCofres')
-    .innerText =
-    `$${selectedCofres * 7}`;
-
+    document.getElementById('cofresDisplay').innerText = `${selectedCofres} Cofres Evo`;
+    document.getElementById('precioCofres').innerText = `$${selectedCofres * 7} MXN`;
 }
 
 function comprarCofres(){
-
-    openPayment(
-        `${selectedCofres} Cofres Evo`,
-        `$${selectedCofres * 7}`
-    );
-
+    openPayment(`${selectedCofres} Cofres Evo`, `$${selectedCofres * 7} MXN`);
 }
 
 function openPayment(p, pr){
-
     curProd = p;
     curPrec = pr;
-
-    document
-    .getElementById('modalPrice')
-    .innerText = pr;
-
-    document
-    .getElementById('paymentModal')
-    .style.display = 'flex';
-
+    document.getElementById('modalPrice').innerText = pr;
+    
+    const inputID = document.getElementById('playerID');
+    
+    // Cambiar dinámicamente si es Netflix, Prime Video o YouTube Premium
+    if (p === 'Netflix Premium' || p === 'Prime Video' || p === 'YouTube Premium') {
+        inputID.placeholder = "Coloca código de TV";
+        inputID.type = "text"; 
+    } else {
+        inputID.placeholder = "ID de Jugador";
+        inputID.type = "number"; 
+    }
+    
+    document.getElementById('paymentModal').style.display = 'flex';
 }
 
 function closePayment(){
-
-    document
-    .getElementById('paymentModal')
-    .style.display = 'none';
-
+    document.getElementById('paymentModal').style.display = 'none';
 }
 
 function updateFileName(){
-
-    const input =
-    document.getElementById('fileInput');
-
+    const input = document.getElementById('fileInput');
     if(input.files.length > 0){
-
-        document
-        .getElementById('labelText')
-        .innerText =
-        "✓ Ticket cargado";
-
-        document
-        .getElementById('fileLabel')
-        .style.borderColor =
-        "#00d26a";
-
+        document.getElementById('labelText').innerText = "✓ Ticket cargado";
+        document.getElementById('fileLabel').style.borderColor = "#00d26a";
     }
-
 }
 
+// ENVIAR DATOS A TU BOT DE TELEGRAM A TRAVÉS DE TU EDGE FUNCTION
 async function enviarPedido(){
+    const id = document.getElementById('playerID').value;
+    const file = document.getElementById('fileInput').files[0];
+    const btn = document.getElementById('btnSubmit');
 
-    const id =
-    document.getElementById('playerID').value;
-
-    const file =
-    document.getElementById('fileInput').files[0];
-
-    const btn =
-    document.getElementById('btnSubmit');
-
-    if(id.length < 5){
-
-        alert("ID inválido");
-        return;
-
+    // Validación según el producto seleccionado (Incluyendo YouTube)
+    if(curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium') {
+        if(id.trim().length < 4){
+            alert("Código de TV inválido");
+            return;
+        }
+    } else {
+        if(id.length < 5){
+            alert("ID inválido");
+            return;
+        }
     }
 
     if(!file){
-
         alert("Sube el comprobante");
         return;
-
     }
 
     btn.disabled = true;
-    btn.innerText = "PROCESANDO...";
+    btn.innerText = "ENVIANDO A TELEGRAM...";
 
-    try{
+    // Ajustar etiqueta del mensaje de Telegram
+    const esStreaming = (curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium');
+    const campoIdentificador = esStreaming ? '📺 Código de TV' : '👤 ID Jugador';
+    
+    const mensajeTexto = `📦 NUEVO PEDIDO RECIBIDO 📦\n\n${campoIdentificador}: ${id}\n🛍️ Producto: ${curProd}\n💰 Precio: ${curPrec}`;
 
-        const fName =
-        `ticket_${Date.now()}_${id}.png`;
+    // Creamos el contenedor de datos para enviárselo a la Edge Function
+    const formData = new FormData();
+    formData.append('texto', mensajeTexto);
+    formData.append('foto', file);
 
-        await _supabase
-        .storage
-        .from('comprobantes')
-        .upload(fName, file);
+    try {
+        const response = await fetch(EDGE_FUNCTION_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            },
+            body: formData
+        });
 
-        const { data:urlData } =
-        _supabase
-        .storage
-        .from('comprobantes')
-        .getPublicUrl(fName);
+        if(response.ok) {
+            alert("¡Pedido y comprobante enviados con éxito!");
+            closePayment();
+            location.reload();
+        } else {
+            throw new Error("Error en la respuesta del servidor");
+        }
 
-        await _supabase
-        .from('pedidos')
-        .insert([{
-            producto:curProd,
-            precio:curPrec,
-            player_id:id,
-            foto_url:urlData.publicUrl
-        }]);
-
-        alert("¡Pago recibido!");
-
-        location.reload();
-
-    }catch(e){
-
-        alert("Error al enviar.");
-
+    } catch(e) {
+        console.error(e);
+        alert("Hubo un problema al enviar el comprobante. Intenta de nuevo.");
         btn.disabled = false;
-        btn.innerText =
-        "ENVIAR COMPROBANTE";
-
+        btn.innerText = "ENVIAR COMPROBANTE";
     }
-
 }
 
 window.onclick = function(e){
-
-    const modal =
-    document.getElementById('paymentModal');
-
+    const modal = document.getElementById('paymentModal');
     if(e.target === modal){
-
         closePayment();
-
     }
-
 }
 
 </script>
 
 </body>
 </html>
-  <!-- SERVICIOS DE STREAMING -->
 
-<div class="section-title">
-    ACTIVACIÓN TV Y STREAMING
-</div>
-
-<div class="grid">
-
-    <!-- NETFLIX -->
-
-    <div class="card" onclick="openPayment('Netflix Premium', '$70')">
-
-        <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
-            class="skin-img"
-            style="background:#000;"
-        >
-
-        <div class="info">
-            <span class="price">
-                Netflix Premium
-            </span>
-        </div>
-
-        <div class="btn-buy">
-            $70 MXN
-        </div>
-
-    </div>
-
-    <!-- PRIME VIDEO -->
-
-    <div class="card" onclick="openPayment('Prime Video', '$40')">
-
-        <img
-            src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"
-            class="skin-img"
-            style="background:#fff;"
-        >
-
-        <div class="info">
-            <span class="price">
-                Prime Video
-            </span>
-        </div>
-
-        <div class="btn-buy">
-            $40 MXN
-        </div>
-
-    </div>
-
-
-    <!-- YOUTUBE -->
-
-    <div class="card" onclick="openPayment('YouTube Premium', '$50')">
-
-        <img
-            src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"
-            class="skin-img"
-            style="background:#fff;"
-        >
-
-        <div class="info">
-            <span class="price">
-                YouTube Premium
-            </span>
-        </div>
-
-        <div class="btn-buy">
-            $50 MXN
-        </div>
-
-    </div>
-
-</div>
