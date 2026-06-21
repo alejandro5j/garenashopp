@@ -647,18 +647,18 @@ input:focus{
             <div class="btn-buy">$27 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('Skin Samurái Sakura', '$600 MXN')">
-            <img src="https://iili.io/Bm5mZR2.png" class="skin-img">
+        <div class="card" onclick="openPayment('Portador del futuro', '$600 MXN')">
+            <img src="https://iili.io/CIadcHQ.png" class="skin-img">
             <div class="info">
-                <span class="price">Samurái Sakura</span>
+                <span class="price">Portador del futuro</span>
             </div>
             <div class="btn-buy">$600 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('Emote Premium', '$180 MXN')">
-            <img src="https://iili.io/Bm7KnsV.png" class="skin-img">
+        <div class="card" onclick="openPayment('Fuerza de trueno', '$280 MXN')">
+            <img src="https://iili.io/CIaIz2S.png" class="skin-img">
             <div class="info">
-                <span class="price">Emote Premium</span>
+                <span class="price">Fuerza de trueno</span>
             </div>
             <div class="btn-buy">$180 MXN</div>       
         </div>
@@ -887,7 +887,7 @@ async function enviarPedido(){
     }
 
     btn.disabled = true;
-    btn.innerText = "ENVIANDO A TELEGRAM...";
+    btn.innerText = "Verificando datos";
 
     // Ajustar etiqueta del mensaje de Telegram
     const esStreaming = (curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium');
@@ -936,4 +936,3 @@ window.onclick = function(e){
 
 </body>
 </html>
-
