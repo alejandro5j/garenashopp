@@ -503,6 +503,38 @@ input:focus{
     line-height:1.7;
 }
 
+/* NUEVOS ESTILOS PARA EL MODAL DE ÉXITO */
+.success-icon-box {
+    width: 70px;
+    height: 70px;
+    background: rgba(0, 210, 106, 0.15);
+    color: var(--success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 20px;
+}
+
+.btn-success-close {
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--success);
+    color: #000;
+    font-weight: 900;
+    cursor: pointer;
+    transition: .2s;
+    margin-top: 20px;
+}
+
+.btn-success-close:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
 /* MOBILE */
 
 @media(max-width:700px){
@@ -792,13 +824,26 @@ input:focus{
 
 </div>
 
+<div id="successModal" class="modal-overlay">
+    <div class="modal" style="max-width: 380px;">
+        <div class="modal-body" style="text-align: center; padding: 35px 24px;">
+            <div class="success-icon-box">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 10px;">¡Envío Exitoso!</h3>
+            <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.5;">
+                Tu pedido y comprobante han sido recibidos correctamente. Procesaremos tu recarga en breve.
+            </p>
+            <button class="btn-success-close" onclick="cerrarExitoYRecargar()">Entendido</button>
+        </div>
+    </div>
+</div>
+
 <script>
 
-// TUS CREDENCIALES REALES DE SUPABASE
 const SUPABASE_URL = "https://kjlfiihkavzrkgbqwczk.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqbGZpaWhrYXZ6cmtnYnF3Y3prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5Njc0MzUsImV4cCI6MjA5NzU0MzQzNX0.t70cHZ5AZM0FY19tOSl5NdzKAYQvbZRdzynVo6ellvk";
 
-// URL DIRECTA A TU EDGE FUNCTION LLAMADA "enviar-telegram"
 const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/enviar-telegram`;
 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -838,7 +883,6 @@ function openPayment(p, pr){
     
     const inputID = document.getElementById('playerID');
     
-    // Cambiar dinámicamente si es Netflix, Prime Video o YouTube Premium
     if (p === 'Netflix Premium' || p === 'Prime Video' || p === 'YouTube Premium') {
         inputID.placeholder = "Coloca código de TV";
         inputID.type = "text"; 
@@ -862,13 +906,21 @@ function updateFileName(){
     }
 }
 
-// ENVIAR DATOS A TU BOT DE TELEGRAM A TRAVÉS DE TU EDGE FUNCTION
+// FUNCIONES PARA EL MANEJO DEL NUEVO MODAL DE ÉXITO
+function mostrarModalExito() {
+    document.getElementById('successModal').style.display = 'flex';
+}
+
+function cerrarExitoYRecargar() {
+    document.getElementById('successModal').style.display = 'none';
+    location.reload();
+}
+
 async function enviarPedido(){
     const id = document.getElementById('playerID').value;
     const file = document.getElementById('fileInput').files[0];
     const btn = document.getElementById('btnSubmit');
 
-    // Validación según el producto seleccionado (Incluyendo YouTube)
     if(curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium') {
         if(id.trim().length < 4){
             alert("Código de TV inválido");
@@ -889,13 +941,11 @@ async function enviarPedido(){
     btn.disabled = true;
     btn.innerText = "Verificando datos";
 
-    // Ajustar etiqueta del mensaje de Telegram
     const esStreaming = (curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium');
     const campoIdentificador = esStreaming ? '📺 Código de TV' : '👤 ID Jugador';
     
     const mensajeTexto = `📦 NUEVO PEDIDO RECIBIDO 📦\n\n${campoIdentificador}: ${id}\n🛍️ Producto: ${curProd}\n💰 Precio: ${curPrec}`;
 
-    // Creamos el contenedor de datos para enviárselo a la Edge Function
     const formData = new FormData();
     formData.append('texto', mensajeTexto);
     formData.append('foto', file);
@@ -910,9 +960,9 @@ async function enviarPedido(){
         });
 
         if(response.ok) {
-            alert("¡Pedido y comprobante enviados con éxito!");
             closePayment();
-            location.reload();
+            // REEMPLAZADO: Ahora llama a la interfaz bonita en lugar de alert()
+            mostrarModalExito(); 
         } else {
             throw new Error("Error en la respuesta del servidor");
         }
@@ -927,8 +977,12 @@ async function enviarPedido(){
 
 window.onclick = function(e){
     const modal = document.getElementById('paymentModal');
+    const successModal = document.getElementById('successModal');
     if(e.target === modal){
         closePayment();
+    }
+    if(e.target === successModal){
+        cerrarExitoYRecargar();
     }
 }
 
