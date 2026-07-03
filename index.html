@@ -49,6 +49,92 @@ body{
     min-height:100vh;
 }
 
+/* ==========================================
+   BANDA/MARQUESINA ANIMADA (DERECHA A IZQUIERDA)
+   ========================================== */
+.promo-ticker {
+    width: 100%;
+    background: #11151c;
+    border-bottom: 1px solid rgba(255, 0, 60, 0.3);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.ticker-wrap {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 25s linear infinite;
+}
+
+.ticker-wrap:hover {
+    animation-play-state: paused; 
+}
+
+.ticker-item {
+    display: inline-block;
+    padding-right: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+}
+
+.ticker-item i {
+    margin-right: 8px;
+}
+
+.text-highlight {
+    color: var(--warning);
+}
+
+.text-brand {
+    color: var(--primary);
+    font-weight: 900;
+}
+
+@keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+/* OPICIÓN DE PARTICIPACIÓN STREAMING */
+.participation-box {
+    background: #1a1d24;
+    border: 1px dashed rgba(255, 0, 60, 0.25);
+    padding: 12px 15px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s;
+}
+
+.participation-box:hover {
+    border-color: var(--primary);
+    background: #1e222b;
+}
+
+.participation-box input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.participation-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+}
+/* ========================================== */
+
 /* HEADER */
 
 header{
@@ -642,6 +728,24 @@ input:focus{
     <img src="https://iili.io/CBvYfEP.png" alt="Banner">
 </div>
 
+<!-- BANDA DINÁMICA CON TU MENSAJE -->
+<div class="promo-ticker">
+    <div class="ticker-wrap">
+        <span class="ticker-item">
+            <i class="fas fa-gift text-brand"></i> Si quieres una de nuestras cuentas, recuerda activar la opción para participar.
+        </span>
+        <span class="ticker-item">
+            <i class="fas fa-random text-highlight"></i> Las cuentas son al azar: <span class="text-brand">Netflix</span>, <span class="text-brand">Prime Video</span> o <span class="text-brand">YouTube</span>.
+        </span>
+        <span class="ticker-item">
+            <i class="fas fa-hourglass-half text-highlight"></i> La duración de las cuentas es limitada a horas o días.
+        </span>
+        <span class="ticker-item">
+            <i class="fas fa-tv text-highlight"></i> Todas las cuentas son por código de TV. Se enviará un comprobante para colocar en la plataforma correspondiente.
+        </span>
+    </div>
+</div>
+
 <header>
     <h1>
         <i class="fas fa-bolt"></i>
@@ -759,20 +863,28 @@ input:focus{
             <div class="btn-buy">$27 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('Portador del futuro', '$600 MXN')">
-            <img src="https://iili.io/CIadcHQ.png" class="skin-img">
+        <div class="card" onclick="openPayment('Domador de dragon', '$250 MXN')">
+            <img src="https://i.ibb.co/k6QdwKCX/file-00000000621472309748f6befeec584d.png" class="skin-img">
             <div class="info">
-                <span class="price">Portador del futuro</span>
+                <span class="price">Domador de dragon</span>
+            </div>
+            <div class="btn-buy">$250 MXN</div>
+        </div>
+
+        <div class="card" onclick="openPayment('Samurái Yang', '$600 MXN')">
+            <img src="https://i.ibb.co/ns0Mxgz4/file-00000000dc4471fda911a22087664272.png" class="skin-img">
+            <div class="info">
+                <span class="price">Samurái Yang</span>
             </div>
             <div class="btn-buy">$600 MXN</div>
         </div>
 
-        <div class="card" onclick="openPayment('Fuerza de trueno', '$280 MXN')">
-            <img src="https://iili.io/CIaIz2S.png" class="skin-img">
+        <div class="card" onclick="openPayment('Mujer Yang', '$600 MXN')">
+            <img src="https://i.ibb.co/pBb0nTFF/file-00000000fc8471f89856fc02c89e6e5e.png" class="skin-img">
             <div class="info">
-                <span class="price">Fuerza de trueno</span>
+                <span class="price">Mujer Yang</span>
             </div>
-            <div class="btn-buy">$280 MXN</div>       
+            <div class="btn-buy">$600 MXN</div>       
         </div>
 
     </div>
@@ -783,12 +895,12 @@ input:focus{
 
     <div class="grid">
 
-        <div class="card" onclick="openPayment('Netflix Premium', '$70 MXN')">
+        <div class="card" onclick="openPayment('Netflix Premium', '$30 MXN')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="skin-img" style="background:#000;">
             <div class="info">
                 <span class="price">Netflix Premium</span>
             </div>
-            <div class="btn-buy">$70 MXN</div>
+            <div class="btn-buy">$30 MXN</div>
         </div>
 
         <div class="card" onclick="openPayment('Prime Video', '$40 MXN')">
@@ -866,7 +978,7 @@ input:focus{
                 <div class="payment-box">
                     <small>PAGO EN OXXO (BBVA):</small><br><br>
                     <b style="color:var(--warning); font-size: 1.1rem; letter-spacing: 0.5px;">
-                        Banco BBVA 4815163126419566
+                        4815163126419566
                     </b>
                 </div>
             </div>
@@ -875,12 +987,20 @@ input:focus{
 
             <!-- INPUT ID JUGADOR / CÓDIGO TV -->
             <input
-                type="number"
+                type="text"
                 id="playerID"
                 placeholder="ID de Jugador"
             >
 
-            <!-- CASILLA DE CONTACTO -->
+            <!-- CASILLA DE SELECCIÓN PARA PARTICIPAR EN SORTEO STREAMING (DINÁMICA) -->
+            <div class="participation-box" id="streamParticipationBox" onclick="toggleParticipationCheckbox()">
+                <input type="checkbox" id="participateCheck" onclick="event.stopPropagation(); toggleContactField();">
+                <span class="participation-label">
+                    🎁 ¡Quiero participar por una cuenta de streaming gratis al azar!
+                </span>
+            </div>
+
+            <!-- CASILLA DE CONTACTO (SE MUESTRA O OCULTA DINÁMICAMENTE) -->
             <input
                 type="text"
                 id="userContact"
@@ -1000,6 +1120,27 @@ function selectPaymentMethod(method) {
     document.getElementById(`content-${method}`).classList.add('active');
 }
 
+// Nueva función al hacer click en el recuadro gris completo de participación
+function toggleParticipationCheckbox() {
+    const checkbox = document.getElementById('participateCheck');
+    checkbox.checked = !checkbox.checked;
+    toggleContactField();
+}
+
+// Controla visualmente si se muestra la casilla de contacto en base al checkbox
+function toggleContactField() {
+    const checkbox = document.getElementById('participateCheck');
+    const inputContact = document.getElementById('userContact');
+    
+    if (checkbox.checked) {
+        inputContact.style.display = "block";
+        inputContact.value = ""; // Limpiar si lo activa
+    } else {
+        inputContact.style.display = "none";
+        inputContact.value = "No participa"; // Valor por defecto si decide desmarcarlo
+    }
+}
+
 function openPayment(p, pr){
     curProd = p;
     curPrec = pr;
@@ -1009,14 +1150,28 @@ function openPayment(p, pr){
     document.querySelectorAll('.tab-btn')[0].classList.add('active');
     
     const inputID = document.getElementById('playerID');
-    document.getElementById('userContact').value = ""; 
+    const inputContact = document.getElementById('userContact');
+    const partBox = document.getElementById('streamParticipationBox');
+    const checkbox = document.getElementById('participateCheck');
+    
+    checkbox.checked = false; 
     
     if (p === 'Netflix Premium' || p === 'Prime Video' || p === 'YouTube Premium') {
         inputID.placeholder = "Coloca código de TV";
         inputID.type = "text"; 
+        
+        // Es streaming: Ocultamos el botón de participar y el contacto por completo
+        partBox.style.display = "none";
+        inputContact.style.display = "none";
+        inputContact.value = "Código de TV"; 
     } else {
         inputID.placeholder = "ID de Jugador";
         inputID.type = "number"; 
+        
+        // Es Diamantes/Pases/Cofres: Mostramos el recuadro para que elija participar
+        partBox.style.display = "flex";
+        inputContact.style.display = "none"; // Oculto al inicio hasta que marque el botón
+        inputContact.value = "No participa";
     }
     
     document.getElementById('paymentModal').style.display = 'flex';
@@ -1026,7 +1181,6 @@ function closePayment(){
     document.getElementById('paymentModal').style.display = 'none';
 }
 
-// Actualizar nombre visual de archivo adjunto
 function updateFileName(){
     const input = document.getElementById('fileInput');
     if(input.files.length > 0){
@@ -1072,9 +1226,12 @@ async function enviarPedido(){
     const id = document.getElementById('playerID').value;
     const contact = document.getElementById('userContact').value;
     const file = document.getElementById('fileInput').files[0];
+    const checkbox = document.getElementById('participateCheck');
     const btn = document.getElementById('btnSubmit');
 
-    if(curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium') {
+    const esStreaming = (curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium');
+
+    if(esStreaming) {
         if(id.trim().length < 4){
             mostrarToast("Código de TV inválido", "warning");
             return;
@@ -1084,11 +1241,11 @@ async function enviarPedido(){
             mostrarToast("ID de Jugador inválido", "error");
             return;
         }
-    }
-
-    if(contact.trim().length < 6){
-        mostrarToast("Ingresa un medio de contacto válido (WhatsApp/Telegram/Correo)", "warning");
-        return;
+        // Si activó participar, obligarlo a colocar su contacto real
+        if(checkbox.checked && (contact.trim().length < 6 || contact === "No participa")) {
+            mostrarToast("Ingresa tu WhatsApp/Telegram para enviarte la cuenta de streaming si ganas", "warning");
+            return;
+        }
     }
 
     if(!file){
@@ -1099,12 +1256,15 @@ async function enviarPedido(){
     btn.disabled = true;
     btn.innerText = "Verificando datos";
 
-    const esStreaming = (curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium');
     const campoIdentificador = esStreaming ? '📺 Código de TV' : '👤 ID Jugador';
-    
     const metodoElegidoText = currentMethod.toUpperCase();
 
-    const mensajeTexto = `📦 NUEVO PEDIDO RECIBIDO 📦\n\n${campoIdentificador}: ${id}\n🛍️ Producto: ${curProd}\n💰 Precio: ${curPrec}\n💳 Método Usado: ${metodoElegidoText}\n📩 Contacto Cliente: ${contact}`;
+    let mensajeTexto = `📦 NUEVO PEDIDO RECIBIDO 📦\n\n${campoIdentificador}: ${id}\n🛍️ Producto: ${curProd}\n💰 Precio: ${curPrec}\n💳 Método Usado: ${metodoElegidoText}`;
+    
+    if(!esStreaming) {
+        const participaText = checkbox.checked ? `SÍ ✅ (Contacto: ${contact})` : "NO ❌";
+        mensajeTexto += `\n🎁 ¿Participa por Cuenta?: ${participaText}`;
+    }
 
     const formData = new FormData();
     formData.append('texto', mensajeTexto);
@@ -1149,4 +1309,3 @@ window.onclick = function(e){
 
 </body>
 </html>
-
