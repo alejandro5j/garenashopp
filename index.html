@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- COLOR DE LA BARRA DEL NAVEGADOR (TEMA OSCURO) -->
+<meta name="theme-color" content="#0f1115">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <title>GARENA SHOP | Premium Store</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -22,7 +27,7 @@
     --muted:#9ca3af;
     --border:rgba(255,255,255,0.08);
     --success:#00d26a;
-    --warning:#ffaa00; /* Nuevo color para alertas */
+    --warning:#ffaa00; 
 
     --shadow:
         0 10px 25px rgba(0,0,0,.35);
@@ -381,6 +386,48 @@ header h1 i{
     padding:24px;
 }
 
+/* TABS MÉTODOS DE PAGO */
+.payment-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: #20242d;
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 12px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: 0.2s;
+}
+
+.tab-btn i {
+    font-size: 1.1rem;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.payment-method-content {
+    display: none;
+}
+
+.payment-method-content.active {
+    display: block;
+}
+
 .payment-box{
     background:#11151c;
     border:1px solid rgba(255,0,60,.25);
@@ -411,6 +458,7 @@ header h1 i{
     font-weight:700;
 
     transition:.2s;
+    margin-bottom: 15px;
 }
 
 .btn-paypal:hover{
@@ -492,7 +540,7 @@ input:focus{
     transform:translateY(-2px);
 }
 
-/* ESTILOS DEL CONTENEDOR TOAST (NOTIFICACIONES) */
+/* TOAST (NOTIFICACIONES) */
 .toast-container {
     position: fixed;
     top: 20px;
@@ -533,7 +581,7 @@ input:focus{
 }
 .toast.warning i { color: var(--warning); }
 
-/* ESTILOS PARA EL MODAL DE ÉXITO */
+/* MODAL DE ÉXITO */
 .success-icon-box {
     width: 70px;
     height: 70px;
@@ -763,6 +811,7 @@ input:focus{
 
 </div>
 
+<!-- MODAL DE PAGOS -->
 <div id="paymentModal" class="modal-overlay">
 
     <div class="modal">
@@ -773,40 +822,72 @@ input:focus{
 
         <div class="modal-body">
 
-            <p style="text-align:center; font-weight:bold; margin-bottom:20px;">
+            <p style="text-align:center; font-weight:bold; margin-bottom:15px;">
                 Total:
                 <span id="modalPrice" style="color:var(--primary);">
                     $0
                 </span>
             </p>
 
-            <div class="payment-box">
-
-                <small>TRANSFERENCIA BBVA:</small><br><br>
-
-                <b style="color:var(--primary);">
-                    012180015437078113
-                </b>
-
+            <!-- 3 BOTONES DE SELECCIÓN DE MÉTODO -->
+            <div class="payment-tabs">
+                <button type="button" class="tab-btn active" onclick="selectPaymentMethod('transferencia')">
+                    <i class="fas fa-university"></i>
+                    Banco
+                </button>
+                <button type="button" class="tab-btn" onclick="selectPaymentMethod('paypal')">
+                    <i class="fab fa-paypal"></i>
+                    PayPal
+                </button>
+                <button type="button" class="tab-btn" onclick="selectPaymentMethod('oxxo')">
+                    <i class="fas fa-store"></i>
+                    Oxxo
+                </button>
             </div>
 
-            <a href="https://www.paypal.me/virusTFF"
-               target="_blank"
-               class="btn-paypal">
+            <!-- CONTENEDORES DE INFORMACIÓN DINÁMICA -->
+            <div id="content-transferencia" class="payment-method-content active">
+                <div class="payment-box">
+                    <small>TRANSFERENCIA BANCO A BANCO:</small><br><br>
+                    <b style="color:var(--primary); font-size: 1.1rem; letter-spacing: 0.5px;">
+                        012180015437078113
+                    </b>
+                </div>
+            </div>
 
-                <i class="fab fa-paypal"></i>
-                Pagar con PayPal
+            <div id="content-paypal" class="payment-method-content">
+                <a href="https://www.paypal.me/virusTFF" target="_blank" class="btn-paypal">
+                    <i class="fab fa-paypal"></i>
+                    Pagar con PayPal
+                </a>
+            </div>
 
-            </a>
+            <div id="content-oxxo" class="payment-method-content">
+                <div class="payment-box">
+                    <small>PAGO EN OXXO (BBVA):</small><br><br>
+                    <b style="color:var(--warning); font-size: 1.1rem; letter-spacing: 0.5px;">
+                        Banco BBVA 4815163126419566
+                    </b>
+                </div>
+            </div>
 
-            <hr style="margin:25px 0; border:0; border-top:1px solid rgba(255,255,255,.1);">
+            <hr style="margin:20px 0; border:0; border-top:1px solid rgba(255,255,255,.1);">
 
+            <!-- INPUT ID JUGADOR / CÓDIGO TV -->
             <input
                 type="number"
                 id="playerID"
                 placeholder="ID de Jugador"
             >
 
+            <!-- CASILLA DE CONTACTO -->
+            <input
+                type="text"
+                id="userContact"
+                placeholder="WhatsApp, Telegram o Correo electrónico"
+            >
+
+            <!-- SUBIDA DE TICKET -->
             <label for="fileInput"
                    class="file-upload-label"
                    id="fileLabel">
@@ -883,6 +964,7 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let curProd = "";
 let curPrec = "";
 let selectedCofres = 1;
+let currentMethod = "transferencia"; 
 
 const scrollMenu = document.getElementById('horizontalCofres');
 
@@ -908,12 +990,26 @@ function comprarCofres(){
     openPayment(`${selectedCofres} Cofres Evo`, `$${selectedCofres * 7} MXN`);
 }
 
+function selectPaymentMethod(method) {
+    currentMethod = method;
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    document.querySelectorAll('.payment-method-content').forEach(content => content.classList.remove('active'));
+    document.getElementById(`content-${method}`).classList.add('active');
+}
+
 function openPayment(p, pr){
     curProd = p;
     curPrec = pr;
     document.getElementById('modalPrice').innerText = pr;
     
+    selectPaymentMethod('transferencia');
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    
     const inputID = document.getElementById('playerID');
+    document.getElementById('userContact').value = ""; 
     
     if (p === 'Netflix Premium' || p === 'Prime Video' || p === 'YouTube Premium') {
         inputID.placeholder = "Coloca código de TV";
@@ -930,6 +1026,7 @@ function closePayment(){
     document.getElementById('paymentModal').style.display = 'none';
 }
 
+// Actualizar nombre visual de archivo adjunto
 function updateFileName(){
     const input = document.getElementById('fileInput');
     if(input.files.length > 0){
@@ -947,7 +1044,6 @@ function cerrarExitoYRecargar() {
     location.reload();
 }
 
-// NUEVA FUNCIÓN PARA MOSTRAR MENSAJES TOAST ELEGANTES
 function mostrarToast(mensaje, tipo = "error") {
     const contenedor = document.getElementById('toastContainer');
     const toast = document.createElement('div');
@@ -962,10 +1058,9 @@ function mostrarToast(mensaje, tipo = "error") {
     
     contenedor.appendChild(toast);
     
-    // Desaparece automáticamente a los 4 segundos
     setTimeout(() => {
         toast.style.animation = "none";
-        toast.offsetHeight; // Truco para reiniciar animación si fuera necesario
+        toast.offsetHeight; 
         toast.style.transition = "0.3s opacity, 0.3s transform";
         toast.style.opacity = "0";
         toast.style.transform = "translateY(-20px)";
@@ -975,25 +1070,28 @@ function mostrarToast(mensaje, tipo = "error") {
 
 async function enviarPedido(){
     const id = document.getElementById('playerID').value;
+    const contact = document.getElementById('userContact').value;
     const file = document.getElementById('fileInput').files[0];
     const btn = document.getElementById('btnSubmit');
 
     if(curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium') {
         if(id.trim().length < 4){
-            // REEMPLAZADO: alert por aviso estético toast
             mostrarToast("Código de TV inválido", "warning");
             return;
         }
     } else {
         if(id.length < 5){
-            // REEMPLAZADO: alert por aviso estético toast
             mostrarToast("ID de Jugador inválido", "error");
             return;
         }
     }
 
+    if(contact.trim().length < 6){
+        mostrarToast("Ingresa un medio de contacto válido (WhatsApp/Telegram/Correo)", "warning");
+        return;
+    }
+
     if(!file){
-        // REEMPLAZADO: alert por aviso estético toast
         mostrarToast("Por favor, sube el comprobante", "warning");
         return;
     }
@@ -1004,7 +1102,9 @@ async function enviarPedido(){
     const esStreaming = (curProd === 'Netflix Premium' || curProd === 'Prime Video' || curProd === 'YouTube Premium');
     const campoIdentificador = esStreaming ? '📺 Código de TV' : '👤 ID Jugador';
     
-    const mensajeTexto = `📦 NUEVO PEDIDO RECIBIDO 📦\n\n${campoIdentificador}: ${id}\n🛍️ Producto: ${curProd}\n💰 Precio: ${curPrec}`;
+    const metodoElegidoText = currentMethod.toUpperCase();
+
+    const mensajeTexto = `📦 NUEVO PEDIDO RECIBIDO 📦\n\n${campoIdentificador}: ${id}\n🛍️ Producto: ${curProd}\n💰 Precio: ${curPrec}\n💳 Método Usado: ${metodoElegidoText}\n📩 Contacto Cliente: ${contact}`;
 
     const formData = new FormData();
     formData.append('texto', mensajeTexto);
@@ -1028,7 +1128,6 @@ async function enviarPedido(){
 
     } catch(e) {
         console.error(e);
-        // REEMPLAZADO: alert por aviso estético toast
         mostrarToast("Error en el servidor. Intenta de nuevo.", "error");
         btn.disabled = false;
         btn.innerText = "ENVIAR COMPROBANTE";
